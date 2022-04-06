@@ -19,7 +19,7 @@ Para jugarlo hay que abrir el archivo `index.html` en el navegador.
 
 ## Funcionamiento del juego
 
-Por implementar...
+El juego contiene 2 jugadores y 3 fantasmas. El jugador 1 se mueve con las flechas del teclado, mientras que el jugador 2 lo hace con las teclas `awsd`.
 
 
 --- 
