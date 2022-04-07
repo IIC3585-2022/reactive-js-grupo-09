@@ -24,3 +24,8 @@
   left: 450;
   height: 50px;
 }
+
+.coin {
+  display: block;
+  border-radius: 50%;
+}

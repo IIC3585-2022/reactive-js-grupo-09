@@ -1,7 +1,7 @@
 // observables
 let playersMove = Rx.Observable.interval(35)
   .subscribe(() => {
-    movePlayer1(player1);
+    movePlayer1(player1, NPCs);
     movePlayer2(player2);
     for (let i = 0; i < NPCs.length; i++){
       moveNPC(NPCs[i]);

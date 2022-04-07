@@ -6,10 +6,13 @@ const leftBorder = (player) => 0 + borderMargin;
 const downBorder = (player) => 700 + margin - player.size;
 const rightBorder = (player) => 900 + margin - player.size;
 
-const downDirection = (player) => {
+const downDirection = (player, NPCs) => {
   let positions = player.div.position();
   if (positions.top < downBorder(player)){
     player.div.css({top: player.div.position().top + 5});
+    if(player.player){
+      checkCollision(player, NPCs)     
+    }
   };
 };
 
@@ -34,9 +37,9 @@ const leftDirection = (player) => {
   };
 };
 
-const movePlayer1 = (player1) => {
+const movePlayer1 = (player1, NPCs) => {
   if (player1.direction === 'ArrowDown'){
-    downDirection(player1);
+    downDirection(player1, NPCs);
   };
   if (player1.direction === 'ArrowRight'){
     rightDirection(player1);
@@ -78,3 +81,32 @@ const moveNPC = (npc) => {
     leftDirection(npc);
   };
 }
+
+
+const checkCollision = (player, NPCs) => {
+  let pos_y = player.div.position().top;
+  let pos_x = player.div.position().left;
+  console.log([pos_x,pos_y])
+  if(NPCs){
+    const condition = (element) => {
+      ( pos_x <= element[0] <= pos_x + player.size) &&
+         (pos_y <= element[1] <= pos_y + player.size)
+    }
+    let result = NPCs.map(element => 
+      [element.div.position().left,element.div.position().top]).some(condition)
+    console.log(result);
+    if(result){
+      
+      console.log('hola');
+      
+    //handleCollision(player);
+          
+    }}
+}
+
+const handleCollision = (player) =>{
+  //desaparecer player
+
+
+}
+
