@@ -5,13 +5,21 @@ let player1 = {
   direction: "ArrowDown",
   player: true,
 };
+player1.initPosition = {
+  top: 8,
+  left: 8,
+}
 
 let player2 = {
   size: 50,
   div: $("#square2"),
-  direction: "s",
+  direction: "w",
   player: true,
 };
+player2.initPosition = {
+  top: 700 + 8 - player2.size,
+  left: 900 + 8 - player2.size,
+}
 
 // NPC
 const basetNPC = {
@@ -28,13 +36,24 @@ let NPCs = [
   { ...basetNPC, id: 3, color: "green" },
 ];
 
+// coins
+const baseCoin = {
+  id: 'coin',
+  size: 25,
+  color: "yellow",
+};
+
 // Give player attributes
 player1.div.css({
+  top: player1.initPosition.top,
+  left: player1.initPosition.left,
   width: player1.size + "px",
   height: player1.size + "px",
 });
 
 player2.div.css({
+  top: player2.initPosition.top,
+  left: player2.initPosition.left,
   width: player2.size + "px",
   height: player2.size + "px",
 });
@@ -53,33 +72,7 @@ for (let i = 0; i < NPCs.length; i++) {
     margin: 0,
     backgroundColor: NPCs[i].color,
   });
-  NPCs[i].div.css({ top: i * (NPCs[i].size * 4) + NPCs[i].size });
 }
 
-//coins
-const baseCoin = {
-  id: 0,
-  size: 50,
-  color: "gold",
-};
-
-//no se muestran
-let coins = [
-  { ...baseCoin, id: 1 },
-  { ...baseCoin, id: 2 },
-];
-
-for (let i = 0; i < coins.length; i++) {
-  jQuery("<div>", {
-    id: coins[i].id,
-    class: "coin",
-  }).appendTo("#game");
-  coins[i].div = $(`.coin#${coins[i].id}`);
-  coins[i].div.css({
-    with: coins[i].size + "px",
-    height: coins[i].size + "px",
-    position: "absolute",
-    margin: 0,
-    backgroundColor: coins[i].color,
-  });
-}
+// set initial Coin
+let coin = generateCoin();

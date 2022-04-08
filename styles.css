@@ -25,7 +25,10 @@
   height: 50px;
 }
 
-.coin {
+#coin {
   display: block;
   border-radius: 50%;
+  background-color: gold;
+  position: absolute;
+  margin: 0;
 }
