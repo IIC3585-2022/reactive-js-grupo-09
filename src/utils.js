@@ -6,6 +6,26 @@ const leftBorder = (player) => 0 + borderMargin;
 const downBorder = (player) => 700 + margin - player.size;
 const rightBorder = (player) => 900 + margin - player.size;
 
+const generateCoin = () => {
+  let coin = {
+    ...baseCoin,
+    top: Math.floor(8 + Math.random() * (700 - baseCoin.size)),
+    left: Math.floor(8 + Math.random() * (900 - baseCoin.size))
+  };
+  // set initial Coin
+  jQuery("<div>", {
+    id: 'coin',
+  }).appendTo("#game");
+  coin.div = $(`#coin`);
+  coin.div.css({
+    width: coin.size + "px",
+    height: coin.size + "px",
+    top: coin.top,
+    left: coin.left,
+  });
+  return coin;
+}
+
 const downDirection = (player) => {
   let positions = player.div.position();
   if (positions.top < downBorder(player)) {
@@ -79,75 +99,93 @@ const moveNPC = (npc) => {
   }
 };
 
-const checkCollision = (player, NPCs) => {
-  let pos_y = player.div.position().top;
-  let pos_x = player.div.position().left;
-  if (NPCs) {
-    const condition = (element) => {
-      if (
-        //right collision
-        pos_x < element[0] &&
-        pos_x + player.size >= element[0] &&
-        distance(pos_x, pos_y, element[0], element[1]) <
-          player.size * Math.sqrt(2) &&
-        player.direction === ("ArrowRight" || "d")
-      ) {
-        console.log("right collision");
-        return true;
-      } else if (
-        //left collision
-        pos_x > element[0] &&
-        pos_x <= element[0] + 50 &&
-        distance(pos_x, pos_y, element[0], element[1]) <
-          player.size * Math.sqrt(2) &&
-        player.direction === ("ArrowLeft" || "a")
-      ) {
-        console.log("left collision");
-        return true;
-      } else if (
-        //up collision
-        pos_y > element[1] &&
-        pos_y <= element[1] + 50 &&
-        distance(pos_x, pos_y, element[0], element[1]) <
-          player.size * Math.sqrt(2) &&
-        player.direction === ("ArrowUp" || "w")
-      ) {
-        console.log("up collision");
-        return true;
-      } else if (
-        //down collision
-        pos_y < element[1] &&
-        pos_y + player.size >= element[1] &&
-        distance(pos_x, pos_y, element[0], element[1]) <
-          player.size * Math.sqrt(2) &&
-        player.direction === ("ArrowDown" || "s")
-      ) {
-        console.log("down collision");
-        return true;
-      }
+const checkCollision = (player, gameObject) => {
+  let playerPosY = player.div.position().top;
+  let playerPosX = player.div.position().left;
+  const condition = (element) => {
+    let gameObjectPosX = element.div.position().left;
+    let gameObjectPosY = element.div.position().top;
+    let directions = {
+      right: ['d', 'ArrowRight'],
+      left: ['a', 'ArrowLeft'],
+      up: ['w', 'ArrowUp'],
+      down: ['s', 'ArrowDown']
+    }
+    if (
+      //right collision
+      playerPosX < gameObjectPosX  &&
+      playerPosX + player.size >= gameObjectPosX &&
+      distance(playerPosX, playerPosY, gameObjectPosX, gameObjectPosY) <
+        player.size * Math.sqrt(2) &&
+      directions.right.includes(player.direction)
+    ) {
+      return true;
     };
-    let result = NPCs.map((element) =>
-      condition([element.div.position().left, element.div.position().top])
-    ).includes(true);
-    console.log(result);
-    /* if (result) {
-      console.log("hay colisión");
-
-      //handleCollision(player);
-    } */
-  }
+    if (
+      //left collision
+      playerPosX > gameObjectPosX &&
+      playerPosX <= gameObjectPosX + gameObject.size &&
+      distance(playerPosX, playerPosY, gameObjectPosX, gameObjectPosY) <
+        player.size * Math.sqrt(2) &&
+        directions.left.includes(player.direction)
+    ) {
+      return true;
+    };
+    if (
+      //up collision
+      playerPosY > gameObjectPosY &&
+      playerPosY <= gameObjectPosY + gameObject.size &&
+      distance(playerPosX, playerPosY, gameObjectPosX, gameObjectPosY) <
+        player.size * Math.sqrt(2) &&
+        directions.up.includes(player.direction)
+    ) {
+      return true;
+    };
+    if (
+      //down collision
+      playerPosY < gameObjectPosY &&
+      playerPosY + player.size >= gameObjectPosY &&
+      distance(playerPosX, playerPosY, gameObjectPosX, gameObjectPosY) <
+        player.size * Math.sqrt(2) &&
+        directions.down.includes(player.direction)
+    ) {
+      return true;
+    };
+    return false;
+  };
+  return condition(gameObject);
 };
 
-const handleCollision = (player) => {
-  //desaparecer player
-};
-
-const getPositions = (character) => {
-  pos_x = character.div.position().left;
-  pos_y = character.div.position().top;
-  return [pos_x, pos_y];
+const handleCollision = (player, hasACollision) => {
+  if (hasACollision){
+    console.log('colision');
+    player.div.css(player.initPosition);
+  };
 };
 
 const distance = (x1, y1, x2, y2) => {
   return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+};
+
+const checkNPCCollision = (player1, player2, NPCs) => {
+  let player1Died = false;
+  let player2Died = false;
+  for (let i = 0; i < NPCs.length; i++){
+    player1Died = checkCollision(player1, NPCs[i]);
+    player2Died = checkCollision(player2, NPCs[i]);
+    handleCollision(player1, player1Died);
+    handleCollision(player2, player2Died);
+  };
+};
+
+const checkCoinCollision = (player1, player2, coin) => {
+  if (checkCollision(player1, coin)){
+    coin.div.remove();
+    coin = generateCoin();
+  }
+  if (checkCollision(player2, coin)){
+    coin.div.remove();
+    coin = generateCoin();
+  }
+  return coin;
 };
