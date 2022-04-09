@@ -1,9 +1,11 @@
 // playable characters
 let player1 = {
+  id: 1,
   size: 50,
   div: $("#square1"),
   direction: "ArrowDown",
   player: true,
+  points: 0,
 };
 player1.initPosition = {
   top: 8,
@@ -11,10 +13,12 @@ player1.initPosition = {
 }
 
 let player2 = {
+  id: 2,
   size: 50,
   div: $("#square2"),
   direction: "w",
   player: true,
+  points: 0,
 };
 player2.initPosition = {
   top: 700 + 8 - player2.size,
@@ -44,35 +48,44 @@ const baseCoin = {
 };
 
 // Give player attributes
-player1.div.css({
-  top: player1.initPosition.top,
-  left: player1.initPosition.left,
-  width: player1.size + "px",
-  height: player1.size + "px",
-});
+Rx.Observable.of(player1)
+  .subscribe(() => {
+    player1.div.css({
+      top: player1.initPosition.top,
+      left: player1.initPosition.left,
+      width: player1.size + "px",
+      height: player1.size + "px",
+    });
+    generatePoints(player1);
+  });
 
-player2.div.css({
-  top: player2.initPosition.top,
-  left: player2.initPosition.left,
-  width: player2.size + "px",
-  height: player2.size + "px",
-});
+Rx.Observable.of(player2)
+  .subscribe(() => {
+    player2.div.css({
+      top: player2.initPosition.top,
+      left: player2.initPosition.left,
+      width: player2.size + "px",
+      height: player2.size + "px",
+    });
+    generatePoints(player2);
+  });
 
 // set NPCs
-for (let i = 0; i < NPCs.length; i++) {
-  jQuery("<div>", {
-    id: NPCs[i].id,
-    class: "npc",
-  }).appendTo("#game");
-  NPCs[i].div = $(`.npc#${NPCs[i].id}`);
-  NPCs[i].div.css({
-    width: NPCs[i].size + "px",
-    height: NPCs[i].size + "px",
-    position: "absolute",
-    margin: 0,
-    backgroundColor: NPCs[i].color,
+Rx.Observable.from(NPCs)
+  .map(npc => {
+    npc.div = generateNPCDiv(npc.id);
+    return npc
+  })
+  .subscribe((npc) => {
+    console.log(npc)
+    npc.div.css({
+      width: npc.size + "px",
+      height: npc.size + "px",
+      position: "absolute",
+      margin: 0,
+      backgroundColor: npc.color,
+    });
   });
-}
 
 // set initial Coin
 let coin = generateCoin();
