@@ -1,7 +1,4 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-f059dc9a6f8d3a56e377f745f24479a46679e63a5d9fe6f495e02850cd0d8118.svg)](https://classroom.github.com/online_ide?assignment_repo_id=7454790&assignment_repo_type=AssignmentRepo)
 # Tarea 2 - Grupo 9
-
----
 
 ## Integrantes
 
@@ -19,8 +16,11 @@ Para jugarlo hay que abrir el archivo `index.html` en el navegador.
 
 ## Funcionamiento del juego
 
-El juego contiene 2 jugadores y 3 fantasmas. El jugador 1 se mueve con las flechas del teclado, mientras que el jugador 2 lo hace con las teclas `awsd`.
+El juego contiene 2 jugadores (cuadros sin color de fondo) y 3 fantasmas (cuadrados con color de fondo). El jugador 1 se mueve con las flechas del teclado, mientras que el jugador 2 lo hace con las teclas `awsd`.
 
+La idea del juego es llegar a los 10 puntos, los cuales se consiguen atrapando las monedas que van saliendo a lo largo del mapa. Los jugadores siempre avanzarán a menos que estén chocando con una pared, por lo que el usuario debe darle las direcciones. 
+
+Si un jugador choca con un fantasma este se devolverá a su zona inicial y perderá 2 puntos (aunque no te preocupes, no puedes tener menos de 0).
 
 --- 
 ## Objetivo
