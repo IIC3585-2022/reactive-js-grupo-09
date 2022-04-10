@@ -213,14 +213,13 @@ const checkCoinCollision = (player1, player2, coin) => {
     coin.div.remove();
     coin = generateCoin();
     player1.points += 1;
-    pipe(generatePoints(player1),checkWinner(player1) );
-   
-  }
+    pipe(generatePoints(player1),checkWinner(player1));
+  };
   if (checkCollision(player2, coin)) {
     coin.div.remove();
     coin = generateCoin();
     player2.points += 1;
-    pipe(generatePoints(player2),checkWinner(player2) );
-  }
+    pipe(generatePoints(player2),checkWinner(player2));
+  };
   return coin;
 };
