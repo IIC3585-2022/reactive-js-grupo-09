@@ -1,5 +1,4 @@
 // observables
-let observable = Rx.Observable.fromEvent($(document), "mousemove");
 let keyDownObservable = Rx.Observable.fromEvent($(document), "keydown");
 let keyUpsObservable = Rx.Observable.fromEvent(document, "keyup");
 
