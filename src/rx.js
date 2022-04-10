@@ -30,19 +30,20 @@ let playersMove = Rx.Observable.interval(35).subscribe(() => {
   }
 });
 
-let npcDirection = Rx.Observable.interval(8*100)
-  .subscribe(() => {
-    const moves = ['up', 'right', 'left', 'down']
-    for (let i = 0; i < NPCs.length; i++){
-      let move = moves[Math.floor(Math.random()*moves.length)];
-      NPCs[i].direction = move;
-    }
-  });
+let npcDirection = Rx.Observable.interval(8 * 100).subscribe(() => {
+  const moves = ["up", "right", "left", "down"];
+  for (let i = 0; i < NPCs.length; i++) {
+    let move = moves[Math.floor(Math.random() * moves.length)];
+    NPCs[i].direction = move;
+  }
+});
 
 // players collisions with intervals
-let playersCollitionSubscription = Rx.Observable.interval(3*100).subscribe(() => {
-  checkNPCCollision(player1, player2, NPCs);
-});
+let playersCollitionSubscription = Rx.Observable.interval(2 * 100).subscribe(
+  () => {
+    checkNPCCollision(player1, player2, NPCs);
+  }
+);
 
 let coinCollitionSubscription = Rx.Observable.interval(100).subscribe(() => {
   coin = checkCoinCollision(player1, player2, coin);

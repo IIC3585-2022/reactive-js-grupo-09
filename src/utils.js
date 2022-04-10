@@ -37,7 +37,7 @@ const generateCoin = () => {
   let coin = {
     ...baseCoin,
     top: Math.floor(8 + Math.random() * (700 - baseCoin.size)),
-    left: Math.floor(8 + Math.random() * (900 - baseCoin.size))
+    left: Math.floor(8 + Math.random() * (900 - baseCoin.size)),
   };
   Rx.Observable.of(coin)
     .subscribe(() => {
@@ -53,7 +53,7 @@ const generateCoin = () => {
       });
     })
   return coin;
-}
+};
 
 const downDirection = (player) => {
   let positions = player.div.position();
@@ -135,51 +135,51 @@ const checkCollision = (player, gameObject) => {
     let gameObjectPosX = element.div.position().left;
     let gameObjectPosY = element.div.position().top;
     let directions = {
-      right: ['d', 'ArrowRight'],
-      left: ['a', 'ArrowLeft'],
-      up: ['w', 'ArrowUp'],
-      down: ['s', 'ArrowDown']
-    }
+      right: ["d", "ArrowRight"],
+      left: ["a", "ArrowLeft"],
+      up: ["w", "ArrowUp"],
+      down: ["s", "ArrowDown"],
+    };
     if (
       //right collision
-      playerPosX < gameObjectPosX  &&
+      playerPosX <= gameObjectPosX &&
       playerPosX + player.size >= gameObjectPosX &&
       distance(playerPosX, playerPosY, gameObjectPosX, gameObjectPosY) <
         player.size * Math.sqrt(2) &&
       directions.right.includes(player.direction)
     ) {
       return true;
-    };
+    }
     if (
       //left collision
-      playerPosX > gameObjectPosX &&
+      playerPosX >= gameObjectPosX &&
       playerPosX <= gameObjectPosX + gameObject.size &&
       distance(playerPosX, playerPosY, gameObjectPosX, gameObjectPosY) <
         player.size * Math.sqrt(2) &&
-        directions.left.includes(player.direction)
+      directions.left.includes(player.direction)
     ) {
       return true;
-    };
+    }
     if (
       //up collision
-      playerPosY > gameObjectPosY &&
+      playerPosY >= gameObjectPosY &&
       playerPosY <= gameObjectPosY + gameObject.size &&
       distance(playerPosX, playerPosY, gameObjectPosX, gameObjectPosY) <
         player.size * Math.sqrt(2) &&
-        directions.up.includes(player.direction)
+      directions.up.includes(player.direction)
     ) {
       return true;
-    };
+    }
     if (
       //down collision
-      playerPosY < gameObjectPosY &&
+      playerPosY <= gameObjectPosY &&
       playerPosY + player.size >= gameObjectPosY &&
       distance(playerPosX, playerPosY, gameObjectPosX, gameObjectPosY) <
         player.size * Math.sqrt(2) &&
-        directions.down.includes(player.direction)
+      directions.down.includes(player.direction)
     ) {
       return true;
-    };
+    }
     return false;
   };
   return condition(gameObject);
@@ -200,23 +200,23 @@ const distance = (x1, y1, x2, y2) => {
 const checkNPCCollision = (player1, player2, NPCs) => {
   let player1Died = false;
   let player2Died = false;
-  for (let i = 0; i < NPCs.length; i++){
+  for (let i = 0; i < NPCs.length; i++) {
     player1Died = checkCollision(player1, NPCs[i]);
     player2Died = checkCollision(player2, NPCs[i]);
     handleCollision(player1, player1Died);
     handleCollision(player2, player2Died);
-  };
+  }
 };
 
 const checkCoinCollision = (player1, player2, coin) => {
-  if (checkCollision(player1, coin)){
+  if (checkCollision(player1, coin)) {
     coin.div.remove();
     coin = generateCoin();
     player1.points += 1;
     pipe(generatePoints(player1),checkWinner(player1) );
    
   }
-  if (checkCollision(player2, coin)){
+  if (checkCollision(player2, coin)) {
     coin.div.remove();
     coin = generateCoin();
     player2.points += 1;
