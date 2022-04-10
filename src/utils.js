@@ -14,6 +14,8 @@ const generateNPCDiv = (id) => {
   return $(`.npc#${id}`);
 };
 
+const pipe = (op1, op2) => (arg) => op2(op1(arg));
+
 const substractPoints = (player) => player.points - 2 < 0 ? 0 : player.points - 2;
 
 const generatePoints = (player) => $(`#points #${player.id}`).text(`Jugador ${player.id}: ${player.points}`);
@@ -211,15 +213,14 @@ const checkCoinCollision = (player1, player2, coin) => {
     coin.div.remove();
     coin = generateCoin();
     player1.points += 1;
-    generatePoints(player1);
-    checkWinner(player1);
+    pipe(generatePoints(player1),checkWinner(player1) );
+   
   }
   if (checkCollision(player2, coin)){
     coin.div.remove();
     coin = generateCoin();
     player2.points += 1;
-    generatePoints(player2);
-    checkWinner(player2);
+    pipe(generatePoints(player2),checkWinner(player2) );
   }
   return coin;
 };

@@ -47,3 +47,4 @@ let playersCollitionSubscription = Rx.Observable.interval(3*100).subscribe(() =>
 let coinCollitionSubscription = Rx.Observable.interval(100).subscribe(() => {
   coin = checkCoinCollision(player1, player2, coin);
 });
+
