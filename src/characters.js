@@ -36,8 +36,8 @@ const basetNPC = {
 
 let NPCs = [
   { ...basetNPC, id: 1, color: "red" },
-  { ...basetNPC, id: 2, color: "blue" },
-  { ...basetNPC, id: 3, color: "green" },
+  { ...basetNPC, id: 2, color: "green" },
+  { ...basetNPC, id: 3, color: "orange" },
 ];
 
 // coins
@@ -77,7 +77,6 @@ Rx.Observable.from(NPCs)
     return npc
   })
   .subscribe((npc) => {
-    console.log(npc)
     npc.div.css({
       width: npc.size + "px",
       height: npc.size + "px",
