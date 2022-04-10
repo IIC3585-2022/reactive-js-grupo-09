@@ -6,23 +6,52 @@ const leftBorder = (player) => 0 + borderMargin;
 const downBorder = (player) => 700 + margin - player.size;
 const rightBorder = (player) => 900 + margin - player.size;
 
+const generateNPCDiv = (id) => {
+  jQuery("<div>", {
+    id: id,
+    class: "npc",
+  }).appendTo("#game");
+  return $(`.npc#${id}`);
+};
+
+const pipe = (op1, op2) => (arg) => op2(op1(arg));
+
+const substractPoints = (player) => player.points - 2 < 0 ? 0 : player.points - 2;
+
+const generatePoints = (player) => $(`#points #${player.id}`).text(`Jugador ${player.id}: ${player.points}`);
+
+const generateWinner = (player) => $('#winner p').text(`Ganador: jugador ${player.id}!`);
+
+const checkWinner = (player) => {
+  if (player.points === 10){
+    keyPressesSubscription.unsubscribe();
+    playersMove.unsubscribe();
+    npcDirection.unsubscribe();
+    playersCollitionSubscription.unsubscribe();
+    coinCollitionSubscription.unsubscribe();
+    generateWinner(player);
+  }
+}
+
 const generateCoin = () => {
   let coin = {
     ...baseCoin,
     top: Math.floor(8 + Math.random() * (700 - baseCoin.size)),
     left: Math.floor(8 + Math.random() * (900 - baseCoin.size)),
   };
-  // set initial Coin
-  jQuery("<div>", {
-    id: "coin",
-  }).appendTo("#game");
-  coin.div = $(`#coin`);
-  coin.div.css({
-    width: coin.size + "px",
-    height: coin.size + "px",
-    top: coin.top,
-    left: coin.left,
-  });
+  Rx.Observable.of(coin)
+    .subscribe(() => {
+      jQuery("<div>", {
+        id: 'coin',
+      }).appendTo("#game");
+      coin.div = $(`#coin`);
+      coin.div.css({
+        width: coin.size + "px",
+        height: coin.size + "px",
+        top: coin.top,
+        left: coin.left,
+      });
+    })
   return coin;
 };
 
@@ -157,10 +186,11 @@ const checkCollision = (player, gameObject) => {
 };
 
 const handleCollision = (player, hasACollision) => {
-  if (hasACollision) {
-    console.log("colision");
+  if (hasACollision){
     player.div.css(player.initPosition);
-  }
+    player.points = substractPoints(player);
+    generatePoints(player);
+  };
 };
 
 const distance = (x1, y1, x2, y2) => {
@@ -182,10 +212,15 @@ const checkCoinCollision = (player1, player2, coin) => {
   if (checkCollision(player1, coin)) {
     coin.div.remove();
     coin = generateCoin();
+    player1.points += 1;
+    pipe(generatePoints(player1),checkWinner(player1) );
+   
   }
   if (checkCollision(player2, coin)) {
     coin.div.remove();
     coin = generateCoin();
+    player2.points += 1;
+    pipe(generatePoints(player2),checkWinner(player2) );
   }
   return coin;
 };

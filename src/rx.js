@@ -10,7 +10,7 @@ let keyPresses = keyDownObservable
   .mergeAll();
 
 // subscriptions
-let keyDownSubscription = keyPresses.subscribe((e) => {
+let keyPressesSubscription = keyPresses.subscribe((e) => {
   const player1Key = "Arrow";
   const player2Key = ["w", "a", "s", "d"];
   if (player1Key === e.key.slice(0, 5)) {
@@ -48,3 +48,4 @@ let playersCollitionSubscription = Rx.Observable.interval(2 * 100).subscribe(
 let coinCollitionSubscription = Rx.Observable.interval(100).subscribe(() => {
   coin = checkCoinCollision(player1, player2, coin);
 });
+
