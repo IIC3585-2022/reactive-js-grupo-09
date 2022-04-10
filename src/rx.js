@@ -10,7 +10,7 @@ let keyPresses = keyDownObservable
   .mergeAll();
 
 // subscriptions
-let keyDownSubscription = keyPresses.subscribe((e) => {
+let keyPressesSubscription = keyPresses.subscribe((e) => {
   const player1Key = "Arrow";
   const player2Key = ["w", "a", "s", "d"];
   if (player1Key === e.key.slice(0, 5)) {

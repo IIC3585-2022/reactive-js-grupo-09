@@ -18,6 +18,19 @@ const substractPoints = (player) => player.points - 2 < 0 ? 0 : player.points - 
 
 const generatePoints = (player) => $(`#points #${player.id}`).text(`Jugador ${player.id}: ${player.points}`);
 
+const generateWinner = (player) => $('#winner p').text(`Ganador: jugador ${player.id}!`);
+
+const checkWinner = (player) => {
+  if (player.points === 10){
+    keyPressesSubscription.unsubscribe();
+    playersMove.unsubscribe();
+    npcDirection.unsubscribe();
+    playersCollitionSubscription.unsubscribe();
+    coinCollitionSubscription.unsubscribe();
+    generateWinner(player);
+  }
+}
+
 const generateCoin = () => {
   let coin = {
     ...baseCoin,
@@ -199,12 +212,14 @@ const checkCoinCollision = (player1, player2, coin) => {
     coin = generateCoin();
     player1.points += 1;
     generatePoints(player1);
+    checkWinner(player1);
   }
   if (checkCollision(player2, coin)){
     coin.div.remove();
     coin = generateCoin();
     player2.points += 1;
     generatePoints(player2);
+    checkWinner(player2);
   }
   return coin;
 };
