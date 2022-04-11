@@ -1,0 +1,61 @@
+body {
+  background-color: black;
+}
+
+#game {
+  width: 900px;
+  height: 700px;
+  border: 1px solid blue;
+}
+
+#square1 {
+  display: block;
+  border: 1px solid white;
+  color: white;
+  position: absolute;
+  margin: 0;
+}
+
+#square2 {
+  display: block;
+  border: 1px solid red;
+  color: red;
+  position: absolute;
+  margin: 0;
+}
+
+.npc {
+  display: block;
+  top: 300;
+  left: 450;
+  height: 50px;
+}
+
+#coin {
+  display: block;
+  border-radius: 50%;
+  background-color: gold;
+  position: absolute;
+  margin: 0;
+}
+
+#points {
+  position: absolute;
+  top: 8;
+  left: 930;
+  border: 1px solid blue;
+  padding: 10px;
+  width: 300px;
+}
+
+p{
+  font-size: 20px;
+  font-family: 'Press Start 2P', cursive;
+  color: white;
+}
+
+#winner {
+  position: absolute;
+  top: 300;
+  left: 930;
+}
